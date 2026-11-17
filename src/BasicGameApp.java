@@ -40,10 +40,13 @@ public class BasicGameApp implements Runnable {
 	public BufferStrategy bufferStrategy;
 	public Image astroPic;
 
+	public int randDY;
+
    //Declare the objects used in the program
    //These are things that are made up of more than one variable type
-	private Astronaut astro;
-
+	public Astronaut astro;
+	//todo make a new astronaught called astro2
+	public Astronaut astro2;
 
    // Main method definition
    // This is the code that runs first and automatically
@@ -65,8 +68,12 @@ public class BasicGameApp implements Runnable {
       //create (construct) the objects needed for the game and load up 
 		astroPic = Toolkit.getDefaultToolkit().getImage("astronaut.png"); //load the picture
 		astro = new Astronaut(10,100);
-
-
+		astro2 = new Astronaut(20, 50);
+		System.out.println(astro.dx);
+		//todo: make astro2 dy random with a range from [1-10]
+		astro.dx = 5;
+		randDY = (int)(Math.random() * 10) +1;
+		astro2.dy = randDY;
 	}// BasicGameApp()
 
    
@@ -93,7 +100,31 @@ public class BasicGameApp implements Runnable {
 	{
       //calls the move( ) code in the objects
 		astro.move();
+		astro2.move();
+		crashing();
 
+	}
+
+	//todo: make a method called crashing
+	public void crashing(){
+		if(astro.hitbox.intersects(astro2.hitbox) && astro.isCrashing == false){// are astro and astro2 touching?
+			System.out.println("crash");
+			System.out.println(astro.isCrashing);
+			//make them bounce off eachother
+			//make one die
+			//follow eachother
+			//make them go faster
+			astro.dy = astro.dy+4;
+			//combine into one large astro
+			//make them bigger
+			astro.height   = astro.height+50;
+			//make another one appear
+			astro.isCrashing = true;
+		}
+
+		if(!astro.hitbox.intersects(astro2.hitbox)){ //are astro and astr2 not touching
+			astro.isCrashing = false;
+		}
 	}
 	
    //Pauses or sleeps the computer for the amount specified in milliseconds
@@ -145,6 +176,9 @@ public class BasicGameApp implements Runnable {
 
       //draw the image of the astronaut
 		g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
+		g.drawImage(astroPic, astro2.xpos, astro2.ypos, astro2.width, astro2.height, null);
+		g.drawRect(astro.hitbox.x, astro.hitbox.y, astro.hitbox.width, astro.hitbox.height);
+		g.drawRect(astro2.hitbox.x, astro2.hitbox.y, astro2.hitbox.width, astro2.hitbox.height);
 
 
 		//end coding here

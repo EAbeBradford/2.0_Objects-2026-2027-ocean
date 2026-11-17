@@ -15,7 +15,8 @@ public class Astronaut {
     public int width;
     public int height;
     public boolean isAlive;            //a boolean to denote if the hero is alive or dead.
-
+    public Rectangle hitbox;
+    public boolean isCrashing;
 
     // METHOD DEFINITION SECTION
 
@@ -29,11 +30,12 @@ public class Astronaut {
         xpos = pXpos;
         ypos = pYpos;
         dx =7;
-        dy =0;
+        dy =-1;
         width = 60;
         height = 60;
         isAlive = true;
- 
+        hitbox = new Rectangle(xpos, ypos, width, height);
+        isCrashing = false;
     } // constructor
 
     //The move method.  Everytime this is run (or "called") the hero's x position and y position change by dx and dy
@@ -41,7 +43,8 @@ public class Astronaut {
         bounce();
         xpos = xpos + dx;
         ypos = ypos + dy;
-        System.out.println(xpos);
+       // System.out.println(xpos);
+        hitbox = new Rectangle(xpos, ypos, width, height);
 
     }
 
@@ -49,6 +52,16 @@ public class Astronaut {
     public void bounce(){
         if(xpos > 1000){
             dx = -dx;
+        }
+
+        if(xpos < 0){
+            dx = -dx;
+        }
+        if(ypos > 700){
+            dy = -dy;
+        }
+        if(ypos < 0){
+            dy = -dy;
         }
     }
 }

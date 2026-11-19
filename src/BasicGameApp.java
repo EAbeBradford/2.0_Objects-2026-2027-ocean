@@ -39,6 +39,7 @@ public class BasicGameApp implements Runnable {
    
 	public BufferStrategy bufferStrategy;
 	public Image astroPic;
+	public Image galaxyPic;
 
 	public int randDY;
 
@@ -67,6 +68,8 @@ public class BasicGameApp implements Runnable {
       //variable and objects
       //create (construct) the objects needed for the game and load up 
 		astroPic = Toolkit.getDefaultToolkit().getImage("astronaut.png"); //load the picture
+		galaxyPic = Toolkit.getDefaultToolkit().getImage("galaxy.jpg"); //load the picture
+
 		astro = new Astronaut(10,100);
 		astro2 = new Astronaut(20, 50);
 		System.out.println(astro.dx);
@@ -107,11 +110,16 @@ public class BasicGameApp implements Runnable {
 
 	//todo: make a method called crashing
 	public void crashing(){
-		if(astro.hitbox.intersects(astro2.hitbox) && astro.isCrashing == false){// are astro and astro2 touching?
+		if(astro.hitbox.intersects(astro2.hitbox) && astro.isCrashing == false && astro2.isAlive == true){// are astro and astro2 touching?
 			System.out.println("crash");
 			System.out.println(astro.isCrashing);
 			//make them bounce off eachother
+			astro2.dx = -astro2.dx;
+			astro.dx = -astro.dx;
+			astro2.dy = -astro2.dy;
+			astro.dy = -astro.dy;
 			//make one die
+			astro2.isAlive = false;
 			//follow eachother
 			//make them go faster
 			astro.dy = astro.dy+4;
@@ -173,10 +181,16 @@ public class BasicGameApp implements Runnable {
 		Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
 		g.clearRect(0, 0, WIDTH, HEIGHT);
 		//start coding from here
+		g.drawImage(galaxyPic, 0, 0, WIDTH, HEIGHT, null);
+
+
 
       //draw the image of the astronaut
 		g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
-		g.drawImage(astroPic, astro2.xpos, astro2.ypos, astro2.width, astro2.height, null);
+
+		if(astro2.isAlive == true) {
+			g.drawImage(astroPic, astro2.xpos, astro2.ypos, astro2.width, astro2.height, null);
+		}
 		g.drawRect(astro.hitbox.x, astro.hitbox.y, astro.hitbox.width, astro.hitbox.height);
 		g.drawRect(astro2.hitbox.x, astro2.hitbox.y, astro2.hitbox.width, astro2.hitbox.height);
 
